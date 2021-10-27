@@ -1,0 +1,29 @@
+body {
+  margin: 0;
+  padding: 0;
+  background: white;
+  overflow: hidden;
+}
+
+.loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  -ms-transform: translate(-50%, -50%);
+  -webkit-transform: translate(-50%, -50%);
+  font-family: sans-serif;
+  color: black;
+}
+
+.tutorial {
+  display: none;
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  -ms-transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
+  font-family: sans-serif;
+  color: black;
+}
