@@ -22,10 +22,9 @@ class App {
     this.renderer = new WebGLRenderer({
       antialias: true,
     });
-    this.renderer.shadowMap.enabled = true;
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setAnimationLoop(this.animation);
-    this.renderer.setClearColor(0x000000, 0);
+    this.renderer.setClearColor(0xF8EDE3, 1);
     document.body.appendChild(this.renderer.domElement);
     window.addEventListener('resize', throttle(this.resize, 100), false);
   }
@@ -61,18 +60,11 @@ class App {
   initStage = (stage, camera, animation) => {
     this.scene.add(stage);
     // illuminate stage
-    const ambientLight = new AmbientLight(0xffffff, .7);
+    const ambientLight = new AmbientLight(0xffffff, .8);
     this.scene.add(ambientLight);
-    const pointLight = new PointLight(0xffffff, .3);
-    pointLight.position.set(0, -6, 50);
-    pointLight.castShadow = true;
-    pointLight.shadow.mapSize.width = 1024;
-    pointLight.shadow.mapSize.height = 1024;
+    const pointLight = new PointLight(0xffffff, .2);
+    pointLight.position.set(10, -10, 40);
     this.scene.add(pointLight);
-    stage.children[1].castShadow = true;
-    stage.children[2].castShadow = true;
-    stage.children[3].castShadow = true;
-    stage.children[4].receiveShadow = true;
     // replace default camera
     this.camera = camera;
     this.resize();
@@ -90,13 +82,15 @@ class App {
    * Get user virtual scroll value
    */
   initScroll = () => {
-    const scroller = new VirtualScroll();
+    const scroller = new VirtualScroll({
+      touchMultiplier: 8,
+    });
     const scrollRatio = 0.00005;
     this.scrollPercent = 0;
     this.smoothScrollPercent = 0;
     scroller.on(e => {
       this.scrollPercent += -e.deltaY * scrollRatio;
-      this.scrollPercent = Math.min(Math.max(this.scrollPercent, 0), 1);
+      // this.scrollPercent = Math.min(Math.max(this.scrollPercent, 0), 1);
     });
   }
 
@@ -109,7 +103,7 @@ class App {
       this.smoothScrollPercent += (this.scrollPercent - this.smoothScrollPercent) * 0.05;
       // update animation time
       this.animationAction.paused = false;
-      this.animationMixer.setTime(this.animationClip.duration * this.smoothScrollPercent);
+      this.animationMixer.setTime(this.animationClip.duration * (this.smoothScrollPercent % 1));
       this.animationAction.paused = true;
       this.animationMixer.update( this.clock.getDelta() );
     }
